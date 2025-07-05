@@ -21,11 +21,11 @@ class Transaksi_model extends CI_Model {
         return $this->db->insert('sales_transactions', $data);
     }
 
-    public function update($id, $data) {
-        return $this->db->where('id', $id)->update('sales_transactions', $data);
+    public function update_by_invoice($invoice_number, $data) {
+        return $this->db->where('invoice_number', $invoice_number)->update('sales_transactions', $data);
     }
 
-    public function delete($id) {
-        return $this->db->where('id', $id)->delete('sales_transactions');
+    public function delete_by_invoice($invoice_number) {
+        return $this->db->where('invoice_number', $invoice_number)->delete('sales_transactions');
     }
 }

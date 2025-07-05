@@ -27,4 +27,10 @@ class Pelanggan_model extends CI_Model {
     public function delete_by_code($code) {
         return $this->db->where('customer_code', $code)->delete('customers');
     }
+
+    public function increment_total_orders($customer_id) {
+        return $this->db->set('total_orders', 'total_orders + 1', false)
+            ->where('id', $customer_id)
+            ->update('customers');
+    }
 }

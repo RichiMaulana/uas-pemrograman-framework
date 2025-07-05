@@ -1,7 +1,7 @@
+        </div>
       </div>
-    </div>
 
-    <!-- <script>
+      <!-- <script>
         // Toggle sidebar
         document.getElementById('toggle-sidebar').addEventListener('click', function() {
             const sidebar = document.getElementById('sidebar');
@@ -62,5 +62,22 @@
         document.getElementById('dashboard-menu').classList.add('active-menu');
         document.getElementById('dashboard-content').classList.remove('hidden');
     </script> -->
-</body>
+
+      <script>
+          function toggleDropdown(button) {
+              const dropdown = button.nextElementSibling;
+              dropdown.classList.toggle('hidden');
+          }
+
+          // Optional: Close dropdown when clicking outside
+          document.addEventListener('click', function(event) {
+              document.querySelectorAll('.dropdown-content').forEach(function(dropdown) {
+                  if (!dropdown.contains(event.target) && !dropdown.previousElementSibling.contains(event.target)) {
+                      dropdown.classList.add('hidden');
+                  }
+              });
+          });
+      </script>
+    </body>
+
 </html>

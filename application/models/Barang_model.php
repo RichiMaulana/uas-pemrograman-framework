@@ -22,4 +22,10 @@ class Barang_model extends CI_Model {
     public function delete($code) {
         return $this->db->where('product_code', $code)->delete('goods');
     }
+
+    public function decrease_stock($product_code, $quantity) {
+        return $this->db->set('stock', 'stock - ' . (int)$quantity, false)
+            ->where('product_code', $product_code)
+            ->update('goods');
+    }
 }
