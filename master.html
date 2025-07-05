@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT Mentari Pagi - Transaction Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .sidebar-collapsed {
+            width: 80px;
+        }
+        .sidebar-collapsed .menu-text {
+            display: none;
+        }
+        .sidebar-collapsed .logo-text {
+            display: none;
+        }
+        .sidebar-collapsed .menu-item {
+            justify-content: center;
+        }
+        .content {
+            transition: all 0.3s ease;
+        }
+        .content-expanded {
+            margin-left: 80px;
+        }
+        .active-menu {
+            background-color: #3b82f6;
+            color: white !important;
+        }
+        .active-menu:hover {
+            background-color: #3b82f6 !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar bg-blue-800 text-white w-64 h-full fixed shadow-lg">
+            <div class="p-4 flex items-center border-b border-blue-700">
+                <div class="bg-white p-2 rounded-lg">
+                    <i class="fas fa-sun text-yellow-400 text-2xl"></i>
+                </div>
+                <div class="ml-3">
+                    <h1 class="logo-text font-bold text-xl">PT Mentari Pagi</h1>
+                    <p class="logo-text text-xs text-blue-200">Transaction Dashboard</p>
+                </div>
+            </div>
+            
+            <div class="p-4 border-b border-blue-700 flex items-center">
+                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="ml-3 logo-text">
+                    <p class="font-medium">Admin User</p>
+                    <p class="text-xs text-blue-200">Super Admin</p>
+                </div>
+            </div>
+            
+            <nav class="mt-4">
+                <ul>
+                    <li>
+                        <a href="#" id="dashboard-menu" class="menu-item flex items-center p-3 hover:bg-blue-700 rounded-lg mx-2 active-menu">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="menu-text ml-3">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="customers-menu" class="menu-item flex items-center p-3 hover:bg-blue-700 rounded-lg mx-2">
+                            <i class="fas fa-users"></i>
+                            <span class="menu-text ml-3">Customers</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="goods-menu" class="menu-item flex items-center p-3 hover:bg-blue-700 rounded-lg mx-2">
+                            <i class="fas fa-boxes"></i>
+                            <span class="menu-text ml-3">Goods</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="sales-menu" class="menu-item flex items-center p-3 hover:bg-blue-700 rounded-lg mx-2">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="menu-text ml-3">Sales Transactions</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="delivery-menu" class="menu-item flex items-center p-3 hover:bg-blue-700 rounded-lg mx-2">
+                            <i class="fas fa-truck"></i>
+                            <span class="menu-text ml-3">Delivery Orders</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="absolute bottom-0 w-full p-4 border-t border-blue-700">
+                <button id="toggle-sidebar" class="w-full flex items-center justify-center p-2 hover:bg-blue-700 rounded-lg">
+                    <i class="fas fa-chevron-left"></i>
+                    <span class="menu-text ml-2">Collapse</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div id="content" class="content flex-1 ml-64 overflow-auto">
+            <!-- Top Navigation -->
+            <header class="bg-white shadow-sm p-4 flex justify-between items-center sticky top-0 z-10">
+                <h2 class="text-xl font-semibold text-gray-800" id="page-title">Dashboard</h2>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                        <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-bell text-gray-600 cursor-pointer hover:text-blue-600"></i>
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
+                    </div>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Profile" class="w-8 h-8 rounded-full">
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Dashboard Content -->
+            <main class="p-6">
+                <!-- Cards -->
+                <div id="dashboard-content" class="content-section">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-500">Total Customers</p>
+                                    <h3 class="text-2xl font-bold">1,248</h3>
+                                </div>
+                                <div class="bg-blue-100 p-3 rounded-full">
+                                    <i class="fas fa-users text-blue-600 text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <span class="text-green-500 text-sm font-medium"><i class="fas fa-arrow-up"></i> 12.5%</span>
+                                <span class="text-gray-500 text-sm ml-2">vs last month</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-500">Total Goods</p>
+                                    <h3 class="text-2xl font-bold">856</h3>
+                                </div>
+                                <div class="bg-green-100 p-3 rounded-full">
+                                    <i class="fas fa-boxes text-green-600 text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <span class="text-green-500 text-sm font-medium"><i class="fas fa-arrow-up"></i> 5.2%</span>
+                                <span class="text-gray-500 text-sm ml-2">vs last month</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-500">Sales Today</p>
+                                    <h3 class="text-2xl font-bold">Rp 24.5M</h3>
+                                </div>
+                                <div class="bg-yellow-100 p-3 rounded-full">
+                                    <i class="fas fa-shopping-cart text-yellow-600 text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <span class="text-red-500 text-sm font-medium"><i class="fas fa-arrow-down"></i> 2.8%</span>
+                                <span class="text-gray-500 text-sm ml-2">vs yesterday</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-500">Pending Deliveries</p>
+                                    <h3 class="text-2xl font-bold">18</h3>
+                                </div>
+                                <div class="bg-red-100 p-3 rounded-full">
+                                    <i class="fas fa-truck text-red-600 text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <span class="text-green-500 text-sm font-medium"><i class="fas fa-arrow-up"></i> 3.1%</span>
+                                <span class="text-gray-500 text-sm ml-2">vs last week</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Charts -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-semibold text-gray-800">Monthly Sales</h3>
+                                <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option>This Year</option>
+                                    <option>Last Year</option>
+                                    <option>All Time</option>
+                                </select>
+                            </div>
+                            <div class="h-64 bg-gray-50 rounded flex items-center justify-center">
+                                <p class="text-gray-400">Sales chart will be displayed here</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-semibold text-gray-800">Top Products</h3>
+                                <select class="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option>This Month</option>
+                                    <option>Last Month</option>
+                                    <option>This Year</option>
+                                </select>
+                            </div>
+                            <div class="h-64 bg-gray-50 rounded flex items-center justify-center">
+                                <p class="text-gray-400">Top products chart will be displayed here</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Transactions -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <div class="p-6 border-b border-gray-200">
+                            <h3 class="font-semibold text-gray-800">Recent Transactions</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Invoice</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">INV-2023-001</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">PT Sinar Jaya</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">15 Jun 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 5,250,000</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Paid</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-eye"></i></button>
+                                            <button class="text-gray-600 hover:text-gray-900"><i class="fas fa-print"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">INV-2023-002</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">CV Bintang Terang</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">14 Jun 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 3,750,000</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-eye"></i></button>
+                                            <button class="text-gray-600 hover:text-gray-900"><i class="fas fa-print"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">INV-2023-003</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">UD Cahaya Abadi</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">13 Jun 2023</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 8,200,000</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Paid</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-eye"></i></button>
+                                            <button class="text-gray-600 hover:text-gray-900"><i class="fas fa-print"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bg-gray-50 px-6 py-3 flex items-center justify-between border-t border-gray-200">
+                            <div class="text-sm text-gray-500">
+                                Showing <span class="font-medium">1</span> to <span class="font-medium">3</span> of <span class="font-medium">24</span> results
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Previous</button>
+                                <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">1</button>
+                                <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">2</button>
+                                <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">3</button>
+                                <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Customers Content -->
+                <div id="customers-content" class="content-section hidden">
+                    <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
+                        <div class="p-6 border-b border-gray-200 flex justify-between items-center">
+                            <h3 class="font-semibold text-gray-800">Customer List</h3>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i class="fas fa-plus mr-2"></i> Add Customer
+                            </button>
+                        </div>
+                        <div class="p-6">
+                            <div class="mb-4 flex justify-between items-center">
+                                <div class="relative w-64">
+                                    <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                                    <input type="text" placeholder="Search customers..." class="pl-10 pr-4 py-2 w-full rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 flex items-center">
+                                        <i class="fas fa-filter mr-2"></i> Filter
+                                    </button>
+                                    <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 flex items-center">
+                                        <i class="fas fa-download mr-2"></i> Export
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer ID</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Orders</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">CUST-001</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Budi Santoso</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">PT Sinar Jaya</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">081234567890</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">budi@sinarjaya.com</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">24</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-edit"></i></button>
+                                                <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">CUST-002</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Ani Rahayu</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">CV Bintang Terang</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">082345678901</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ani@bintangterang.com</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">18</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-edit"></i></button>
+                                                <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">CUST-003</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Joko Prasetyo</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">UD Cahaya Abadi</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">083456789012</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">joko@cahayaabadi.com</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">32</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-edit"></i></button>
+                                                <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-gray-50 px-6 py-3 flex items-center justify-between border-t border-gray-200">
+                                <div class="text-sm text-gray-500">
+                                    Showing <span class="font-medium">1</span> to <span class="font-medium">3</span> of <span class="font-medium">45</span> customers
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Previous</button>
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">1</button>
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">2</button>
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">3</button>
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Goods Content -->
+                <div id="goods-content" class="content-section hidden">
+                    <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
+                        <div class="p-6 border-b border-gray-200 flex justify-between items-center">
+                            <h3 class="font-semibold text-gray-800">Goods Inventory</h3>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i class="fas fa-plus mr-2"></i> Add Goods
+                            </button>
+                        </div>
+                        <div class="p-6">
+                            <div class="mb-4 flex justify-between items-center">
+                                <div class="relative w-64">
+                                    <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                                    <input type="text" placeholder="Search goods..." class="pl-10 pr-4 py-2 w-full rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 flex items-center">
+                                        <i class="fas fa-filter mr-2"></i> Filter
+                                    </button>
+                                    <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 flex items-center">
+                                        <i class="fas fa-download mr-2"></i> Export
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product Code</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">PRD-001</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">LED Bulb 10W</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Lighting</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">125</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 35,000</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">In Stock</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-edit"></i></button>
+                                                <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">PRD-002</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Solar Panel 100W</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Solar</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">42</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 1,250,000</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">In Stock</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-edit"></i></button>
+                                                <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">PRD-003</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Inverter 2000W</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Power</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">8</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 2,800,000</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Low Stock</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-edit"></i></button>
+                                                <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">PRD-004</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Battery 100Ah</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Battery</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 3,500,000</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Out of Stock</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-edit"></i></button>
+                                                <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-gray-50 px-6 py-3 flex items-center justify-between border-t border-gray-200">
+                                <div class="text-sm text-gray-500">
+                                    Showing <span class="font-medium">1</span> to <span class="font-medium">4</span> of <span class="font-medium">86</span> products
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Previous</button>
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">1</button>
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">2</button>
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">3</button>
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sales Transactions Content -->
+                <div id="sales-content" class="content-section hidden">
+                    <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
+                        <div class="p-6 border-b border-gray-200 flex justify-between items-center">
+                            <h3 class="font-semibold text-gray-800">Sales Transactions</h3>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i class="fas fa-plus mr-2"></i> New Transaction
+                            </button>
+                        </div>
+                        <div class="p-6">
+                            <div class="mb-4 flex justify-between items-center">
+                                <div class="relative w-64">
+                                    <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                                    <input type="text" placeholder="Search transactions..." class="pl-10 pr-4 py-2 w-full rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 flex items-center">
+                                        <i class="fas fa-filter mr-2"></i> Filter
+                                    </button>
+                                    <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 flex items-center">
+                                        <i class="fas fa-download mr-2"></i> Export
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Invoice No.</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Items</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">INV-2023-001</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">15 Jun 2023</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">PT Sinar Jaya</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 5,250,000</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Paid</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-eye"></i></button>
+                                                <button class="text-gray-600 hover:text-gray-900 mr-3"><i class="fas fa-print"></i></button>
+                                                <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">INV-2023-002</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">14 Jun 2023</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">CV Bintang Terang</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 3,750,000</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-eye"></i></button>
+                                                <button class="text-gray-600 hover:text-gray-900 mr-3"><i class="fas fa-print"></i></button>
+                                                <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">INV-2023-003</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">13 Jun 2023</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">UD Cahaya Abadi</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 8,200,000</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Paid</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-eye"></i></button>
+                                                <button class="text-gray-600 hover:text-gray-900 mr-3"><i class="fas fa-print"></i></button>
+                                                <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">INV-2023-004</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">12 Jun 2023</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">PT Energi Baru</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">7</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 12,500,000</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Canceled</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-eye"></i></button>
+                                                <button class="text-gray-600 hover:text-gray-900 mr-3"><i class="fas fa-print"></i></button>
+                                                <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-gray-50 px-6 py-3 flex items-center justify-between border-t border-gray-200">
+                                <div class="text-sm text-gray-500">
+                                    Showing <span class="font-medium">1</span> to <span class="font-medium">4</span> of <span class="font-medium">28</span> transactions
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Previous</button>
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">1</button>
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">2</button>
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">3</button>
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Delivery Orders Content -->
+                <div id="delivery-content" class="content-section hidden">
+                    <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
+                        <div class="p-6 border-b border-gray-200 flex justify-between items-center">
+                            <h3 class="font-semibold text-gray-800">Delivery Orders</h3>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i class="fas fa-plus mr-2"></i> New Delivery
+                            </button>
+                        </div>
+                        <div class="p-6">
+                            <div class="mb-4 flex justify-between items-center">
+                                <div class="relative w-64">
+                                    <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                                    <input type="text" placeholder="Search deliveries..." class="pl-10 pr-4 py-2 w-full rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 flex items-center">
+                                        <i class="fas fa-filter mr-2"></i> Filter
+                                    </button>
+                                    <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 flex items-center">
+                                        <i class="fas fa-download mr-2"></i> Export
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">DO No.</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Invoice No.</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Items</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">DO-2023-001</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">16 Jun 2023</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">PT Sinar Jaya</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">INV-2023-001</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Delivered</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-eye"></i></button>
+                                                <button class="text-gray-600 hover:text-gray-900 mr-3"><i class="fas fa-print"></i></button>
+                                                <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">DO-2023-002</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">15 Jun 2023</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">CV Bintang Terang</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">INV-2023-002</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">On Process</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-eye"></i></button>
+                                                <button class="text-gray-600 hover:text-gray-900 mr-3"><i class="fas fa-print"></i></button>
+                                                <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">DO-2023-003</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">14 Jun 2023</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">UD Cahaya Abadi</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">INV-2023-003</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">On Delivery</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-eye"></i></button>
+                                                <button class="text-gray-600 hover:text-gray-900 mr-3"><i class="fas fa-print"></i></button>
+                                                <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">DO-2023-004</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">13 Jun 2023</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">PT Energi Baru</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">INV-2023-004</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">7</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Canceled</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <button class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-eye"></i></button>
+                                                <button class="text-gray-600 hover:text-gray-900 mr-3"><i class="fas fa-print"></i></button>
+                                                <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-gray-50 px-6 py-3 flex items-center justify-between border-t border-gray-200">
+                                <div class="text-sm text-gray-500">
+                                    Showing <span class="font-medium">1</span> to <span class="font-medium">4</span> of <span class="font-medium">18</span> deliveries
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Previous</button>
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">1</button>
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">2</button>
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">3</button>
+                                    <button class="px-3 py-1 border border-gray-300 rounded text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Toggle sidebar
+        document.getElementById('toggle-sidebar').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            
+            sidebar.classList.toggle('sidebar-collapsed');
+            content.classList.toggle('content-expanded');
+            
+            // Change icon and text
+            const icon = this.querySelector('i');
+            const text = this.querySelector('.menu-text');
+            
+            if (sidebar.classList.contains('sidebar-collapsed')) {
+                icon.classList.remove('fa-chevron-left');
+                icon.classList.add('fa-chevron-right');
+                text.textContent = 'Expand';
+            } else {
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-left');
+                text.textContent = 'Collapse';
+            }
+        });
+        
+        // Menu navigation
+        const menuItems = ['dashboard', 'customers', 'goods', 'sales', 'delivery'];
+        
+        menuItems.forEach(item => {
+            const menuElement = document.getElementById(`${item}-menu`);
+            const contentElement = document.getElementById(`${item}-content`);
+            
+            menuElement.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all menus
+                menuItems.forEach(menu => {
+                    document.getElementById(`${menu}-menu`).classList.remove('active-menu');
+                    document.getElementById(`${menu}-content`).classList.add('hidden');
+                });
+                
+                // Add active class to clicked menu
+                this.classList.add('active-menu');
+                contentElement.classList.remove('hidden');
+                
+                // Update page title
+                const titleMap = {
+                    'dashboard': 'Dashboard',
+                    'customers': 'Customers',
+                    'goods': 'Goods Inventory',
+                    'sales': 'Sales Transactions',
+                    'delivery': 'Delivery Orders'
+                };
+                
+                document.getElementById('page-title').textContent = titleMap[item];
+            });
+        });
+        
+        // Set dashboard as active by default
+        document.getElementById('dashboard-menu').classList.add('active-menu');
+        document.getElementById('dashboard-content').classList.remove('hidden');
+    </script>
+</body>
+</html>
