@@ -29,4 +29,10 @@ class Delivery_model extends CI_Model {
     public function delete_by_do_number($do_number) {
         return $this->db->where('do_number', $do_number)->delete('delivery_orders');
     }
+    public function count_pending() {
+        return $this->db
+            ->where('status', 'On Process')
+            ->or_where('status', 'On Delivery')
+            ->count_all_results('delivery_orders');
+    }    
 }

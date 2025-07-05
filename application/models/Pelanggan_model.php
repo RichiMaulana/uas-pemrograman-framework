@@ -33,4 +33,8 @@ class Pelanggan_model extends CI_Model {
             ->where('id', $customer_id)
             ->update('customers');
     }
+
+    public function count_all() {
+        return $this->db->count_all('customers');
+    }
 }

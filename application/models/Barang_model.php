@@ -28,4 +28,8 @@ class Barang_model extends CI_Model {
             ->where('product_code', $product_code)
             ->update('goods');
     }
+
+    public function count_all() {
+        return $this->db->count_all('goods');
+    }
 }
