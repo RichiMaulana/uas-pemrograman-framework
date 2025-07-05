@@ -4,22 +4,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Barang_model extends CI_Model {
 
     public function get_all() {
-        return $this->db->order_by('name', 'ASC')->get('goods')->result();
+        return $this->db->order_by('created_at', 'ASC')->get('goods')->result();
     }
 
-    public function get_by_id($id) {
-        return $this->db->get_where('goods', ['id' => $id])->row();
+    public function get_by_code($code) {
+        return $this->db->get_where('goods', ['product_code' => $code])->row();
     }
 
     public function insert($data) {
         return $this->db->insert('goods', $data);
     }
 
-    public function update($id, $data) {
-        return $this->db->where('id', $id)->update('goods', $data);
+    public function update($code, $data) {
+        return $this->db->where('product_code', $code)->update('goods', $data);
     }
 
-    public function delete($id) {
-        return $this->db->where('id', $id)->delete('goods');
+    public function delete($code) {
+        return $this->db->where('product_code', $code)->delete('goods');
     }
 }

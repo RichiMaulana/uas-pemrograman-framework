@@ -47,7 +47,7 @@
                 </div>
                 <div class="ml-3">
                     <h1 class="logo-text font-bold text-xl">PT Mentari Pagi</h1>
-                    <p class="logo-text text-xs text-blue-200">Transaction Dashboard</p>
+                    <p class="logo-text text-xs text-blue-200">Dashboard Transaksi</p>
                 </div>
             </div>
             
@@ -97,7 +97,7 @@
             </nav>
             
             <div class="absolute bottom-0 w-full p-4 border-t border-blue-700">
-                <button id="toggle-sidebar" class="w-full flex items-center justify-center p-2 hover:bg-blue-700 rounded-lg">
+                <button id="toggle-sidebar" class="w-full flex items-center justify-center p-2 hover:bg-blue-700 rounded-lg hidden" >
                     <i class="fas fa-chevron-left"></i>
                     <span class="menu-text ml-2">Collapse</span>
                 </button>
