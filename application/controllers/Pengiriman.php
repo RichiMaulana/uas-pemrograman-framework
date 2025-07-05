@@ -14,7 +14,7 @@ class Pengiriman extends CI_Controller {
   {
     $data['delivery_list'] = $this->Delivery_model->get_all();
     $data['page_title'] = 'Pengiriman';
-    $data['active_menu'] = 'pengiriman';
+    $data['active_menu'] = 'delivery';
 
     $this->load->view('layouts/header', $data);
     $this->load->view('pengiriman');

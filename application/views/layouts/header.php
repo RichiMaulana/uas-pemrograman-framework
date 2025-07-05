@@ -64,25 +64,25 @@
             <nav class="mt-4">
                 <ul>
                     <li>
-                        <a href="/dashboard" id="dashboard-menu" class="menu-item flex items-center p-3 hover:bg-blue-700 rounded-lg mx-2 active-menu">
+                        <a href="/dashboard" id="dashboard-menu" class="menu-item flex items-center p-3 hover:bg-blue-700 rounded-lg mx-2">
                             <i class="fas fa-tachometer-alt"></i>
                             <span class="menu-text ml-3">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/pelanggan" id="customers-menu" class="menu-item flex items-center p-3 hover:bg-blue-700 rounded-lg mx-2">
+                        <a href="/pelanggan" id="pelanggan-menu" class="menu-item flex items-center p-3 hover:bg-blue-700 rounded-lg mx-2">
                             <i class="fas fa-users"></i>
                             <span class="menu-text ml-3">Pelanggan</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/barang" id="goods-menu" class="menu-item flex items-center p-3 hover:bg-blue-700 rounded-lg mx-2">
+                        <a href="/barang" id="barang-menu" class="menu-item flex items-center p-3 hover:bg-blue-700 rounded-lg mx-2">
                             <i class="fas fa-boxes"></i>
                             <span class="menu-text ml-3">Barang</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/transaksi" id="sales-menu" class="menu-item flex items-center p-3 hover:bg-blue-700 rounded-lg mx-2">
+                        <a href="/transaksi" id="transaksi-menu" class="menu-item flex items-center p-3 hover:bg-blue-700 rounded-lg mx-2">
                             <i class="fas fa-shopping-cart"></i>
                             <span class="menu-text ml-3">Transaksi</span>
                         </a>
